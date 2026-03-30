@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Certificate Verification</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 80px;
+      background: #f5f5f5;
+    }
+    input {
+      padding: 12px;
+      width: 260px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 12px 20px;
+      background: #0A1F44;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      display: inline-block;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    a {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #C5A46D;
+      color: white;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Certificate Verification</h2>
+
+<input type="text" id="certID" placeholder="Enter Document ID">
+<button onclick="verify()">Verify</button>
+
+<div id="result"></div>
+
+<script>
+async function verify() {
+  const id = document.getElementById("certID").value.trim().toUpperCase();
+  const res = await fetch("data.json");
+  const data = await res.json();
+
+  const found = data.find(item => item.id === id);
+
+  const resultDiv = document.getElementById("result");
+
+  if (found) {
+    resultDiv.innerHTML = `
+      <div class="card">
+        <b style="color:green;">✔ Valid Certificate</b><br><br>
+        Name: ${found.name}<br>
+        Event: ${found.event}<br>
+        ID: ${found.id}<br><br>
+        <a href="${found.file}" target="_blank">Download Certificate</a>
+      </div>
+    `;
+  } else {
+    resultDiv.innerHTML = "<span style='color:red;'>❌ Invalid Certificate</span>";
+  }
+}
+</script>
+
+</body>
+</html>
