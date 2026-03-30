@@ -58,7 +58,6 @@ async function verify() {
   const data = await res.json();
 
   const found = data.find(item => item.id === id);
-
   const resultDiv = document.getElementById("result");
 
   if (found) {
@@ -68,12 +67,17 @@ async function verify() {
         Name: ${found.name}<br>
         Event: ${found.event}<br>
         ID: ${found.id}<br><br>
-        <a href="${found.file}" target="_blank">Download Certificate</a>
+        <button onclick="downloadCert('${found.file}')">Download Certificate</button>
       </div>
     `;
   } else {
     resultDiv.innerHTML = "<span style='color:red;'>❌ Invalid Certificate</span>";
   }
+}
+
+function downloadCert(filePath) {
+  // open without exposing link directly
+  window.open(filePath, "_blank");
 }
 </script>
 
