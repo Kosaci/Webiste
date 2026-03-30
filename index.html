@@ -75,10 +75,25 @@ async function verify() {
   }
 }
 
-//function downloadCert(filePath) {
-  // open without exposing link directly
- // window.open(filePath);
-//}
+function downloadCert(filePath) {
+  fetch(filePath)
+    .then(res => res.blob())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = ""; // keeps original filename
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      URL.revokeObjectURL(url);
+    })
+    .catch(() => {
+      alert("Download failed");
+    });
+}
 </script>
 
 </body>
